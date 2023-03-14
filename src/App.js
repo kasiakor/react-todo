@@ -38,6 +38,16 @@ export default class App extends Component {
     this.setState({ newItemText: event.target.value });
   };
 
+  todoTableRows = () =>
+    this.state.toDoItems.map((item) => (
+      <tr key={item.action}>
+        <td>{item.action}</td>
+        <td>
+          <input type="checkbox" checked={item.done}></input>
+        </td>
+      </tr>
+    ));
+
   render() {
     return (
       <div>
@@ -60,6 +70,15 @@ export default class App extends Component {
               Add
             </button>
           </div>
+          <table className="table table-striped table-bordered">
+            <thead>
+              <tr>
+                <th>Description</th>
+                <th>Done</th>
+              </tr>
+            </thead>
+            <tbody>{this.todoTableRows()}</tbody>
+          </table>
         </div>
       </div>
     );
