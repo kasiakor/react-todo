@@ -19,6 +19,7 @@ export default class App extends Component {
   createNewItem = () => {
     // checks if any array element has got the same text as the input
     if (
+      this.state.newItemText !== "" &&
       !this.state.toDoItems.find((i) => i.action === this.state.newItemText)
     ) {
       this.setState({
@@ -36,14 +37,26 @@ export default class App extends Component {
 
   updateNewTextValue = (event) => {
     this.setState({ newItemText: event.target.value });
+    console.log("update", event.target.value);
   };
+
+  toggleTodo = (todo) =>
+    this.setState({
+      toDoItems: this.state.toDoItems.map((item) =>
+        item.action === todo.action ? { ...item, done: !item.done } : item
+      ),
+    });
 
   todoTableRows = () =>
     this.state.toDoItems.map((item) => (
       <tr key={item.action}>
         <td>{item.action}</td>
         <td>
-          <input type="checkbox" checked={item.done}></input>
+          <input
+            type="checkbox"
+            checked={item.done}
+            onChange={() => this.toggleTodo(item)}
+          ></input>
         </td>
       </tr>
     ));
