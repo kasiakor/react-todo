@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-class TodoBanner extends Component {
+export class TodoBanner extends Component {
   render() {
     return (
       <h4 className="bg-primary text-white text-center p-2">
@@ -12,5 +12,3 @@ class TodoBanner extends Component {
     );
   }
 }
-
-export default TodoBanner;

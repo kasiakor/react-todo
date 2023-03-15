@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-class TodoCreator extends Component {
+export class TodoCreator extends Component {
   constructor(props) {
     super(props);
     this.state = { newItemText: "" };
@@ -12,7 +12,8 @@ class TodoCreator extends Component {
   };
 
   createNewTodo = () => {
-    this.props.callback(this.props.newItemText);
+    // the component will invoke function prop to notify the parent when the user clicks Add button
+    this.props.callback(this.state.newItemText);
     this.setState({ newItemText: "" });
   };
 
@@ -34,5 +35,3 @@ class TodoCreator extends Component {
     );
   }
 }
-
-export default TodoCreator;
