@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { TodoBanner } from "./TodoBanner";
 import { TodoCreator } from "./TodoCreator";
 import { TodoRow } from "./TodoRow";
+import { VisibilityControl } from "./VisibilityControl";
 
 export default class App extends Component {
   constructor(props) {
@@ -14,6 +15,7 @@ export default class App extends Component {
         { action: "Cook dinner", done: true },
         { action: "Walk a dog", done: true },
       ],
+      showCompleted: true,
       //newItemText: "",
     };
   }
@@ -46,20 +48,23 @@ export default class App extends Component {
       ),
     });
 
-  todoTableRows = () =>
-    this.state.toDoItems.map((item) => (
-      <TodoRow key={item.action} item={item} callback={this.toggleTodo} />
-      // <tr key={item.action}>
-      //   <td>{item.action}</td>
-      //   <td>
-      //     <input
-      //       type="checkbox"
-      //       checked={item.done}
-      //       onChange={() => this.toggleTodo(item)}
-      //     ></input>
-      //   </td>
-      // </tr>
-    ));
+  todoTableRows = (doneValue) =>
+    this.state.toDoItems
+      // select objects based on done property, true/false
+      .filter((item) => item.done === doneValue)
+      .map((item) => (
+        <TodoRow key={item.action} item={item} callback={this.toggleTodo} />
+        // <tr key={item.action}>
+        //   <td>{item.action}</td>
+        //   <td>
+        //     <input
+        //       type="checkbox"
+        //       checked={item.done}
+        //       onChange={() => this.toggleTodo(item)}
+        //     ></input>
+        //   </td>
+        // </tr>
+      ));
 
   render() {
     return (
@@ -91,8 +96,27 @@ export default class App extends Component {
                 <th>Done</th>
               </tr>
             </thead>
-            <tbody>{this.todoTableRows()}</tbody>
+            <tbody>{this.todoTableRows(false)}</tbody>
           </table>
+          <div className="bg-secondary text-white text-center p-2">
+            <VisibilityControl
+              description="Completed task"
+              isChecked={this.state.showCompleted}
+              callback={(checked) => this.setState({ showCompleted: checked })}
+            />
+          </div>
+          {/* show table only when showCompleted is true */}
+          {this.state.showCompleted && (
+            <table className="table table-striped table-bordered">
+              <thead>
+                <tr>
+                  <th>Description</th>
+                  <th>Done</th>
+                </tr>
+              </thead>
+              <tbody>{this.todoTableRows(true)}</tbody>
+            </table>
+          )}
         </div>
       </div>
     );
