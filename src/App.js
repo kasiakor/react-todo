@@ -24,15 +24,19 @@ export default class App extends Component {
     console.log("task", typeof task);
     // checks if any array element has got the same text as the input
     if (task !== "" && !this.state.toDoItems.find((i) => i.action === task)) {
-      this.setState({
-        toDoItems: [
-          ...this.state.toDoItems,
-          {
-            action: task,
-            done: false,
-          },
-        ],
-      });
+      this.setState(
+        {
+          toDoItems: [
+            ...this.state.toDoItems,
+            {
+              action: task,
+              done: false,
+            },
+          ],
+        },
+        // local storage can only store string values
+        () => localStorage.setItem("todos", JSON.stringify(this.state))
+      );
     }
   };
 
@@ -65,6 +69,25 @@ export default class App extends Component {
         //   </td>
         // </tr>
       ));
+
+  componentDidMount = () => {
+    let data = localStorage.getItem("todos");
+    this.setState(
+      // if no data, default data
+      data != null
+        ? JSON.parse(data)
+        : {
+            userName: "Adam",
+            toDoItems: [
+              { action: "Go to cinema", done: true },
+              { action: "Read a book", done: false },
+              { action: "Cook dinner", done: true },
+              { action: "Walk a dog", done: true },
+            ],
+            showCompleted: true,
+          }
+    );
+  };
 
   render() {
     return (
